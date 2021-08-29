@@ -1,5 +1,7 @@
 import React from "react";
 
+import { createStage } from "../../gameHelper";
+
 //components
 import Stage from "../Stage/Stage";
 import Display from "../Display/Display";
@@ -10,7 +12,7 @@ import "./Tetris.css";
 
 const Tetris = () => (
   <div className="Tetris">
-    <Stage />
+    <Stage stage={createStage()} />
     <aside>
       <div>
         <Display text="Score" />
