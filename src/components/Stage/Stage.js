@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Stage.css";
 import Cell from "../Cell/Cell";
+import {StyledStage} from '../styles/StyledStage'
 
 const Stage = ({ stage }) => (
-  <div className="Stage">
+  <StyledStage width={stage[0].length} height={stage.length}>
     {stage.map((row) => row.map((cell, x) => <Cell key={x} type={cell[0]} />))}
-  </div>
+  </StyledStage>
 );
 
 Stage.propTypes = {};
