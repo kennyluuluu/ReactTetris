@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./StartButton.css";
+// import "./StartButton.css";
+import { StyledStartButton } from "../styles/StyledStartButton";
 
 const StartButton = ({ callback }) => (
-  <div className="StartButton">StartGame</div>
+  <StyledStartButton onClick={callback}>Start Game</StyledStartButton>
 );
 
 StartButton.propTypes = {};
