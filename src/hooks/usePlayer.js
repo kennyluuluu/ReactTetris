@@ -1,6 +1,6 @@
 import {useState, useCallback} from 'react';
 import { TETROMINOS, randomTetromino } from '../tetrominos';
-import { STAGE_WIDTH } from '../gameHelper';
+import { STAGE_HEIGHT, STAGE_WIDTH } from '../gameHelper';
 
 export const usePlayer = () => {
     const [player, setPlayer] = useState({
@@ -9,11 +9,39 @@ export const usePlayer = () => {
         collided: false,
     });
 
-    const updatePlayerPos = ({x, y, collided}) => {
-        setPlayer(prev =>({
+    const rotate = ((stage, matrix) => {
+        const newMatrix = matrix.map((row, y) => {
+            return row.map((_, x) => matrix[x][matrix.length-1 - y])
+        });
+
+        // check bounds and collision
+        for(let y = 0; y < newMatrix.length; y++) {
+            for(let x = 0; x < newMatrix[0].length; x++) {
+                if(newMatrix[y][x] !== 0) {
+                    if(player.pos.y + y < 0 || player.pos.x + x < 0 || player.pos.y + y >= STAGE_HEIGHT || player.pos.x + x >= STAGE_WIDTH)
+                        return;
+                    else if(stage[player.pos.y + y][player.pos.x + x][1] !== 'clear') {
+                        return;
+                    }
+                } 
+            }
+        }
+
+        setPlayer(prev => ({
             ...prev,
+            tetromino: newMatrix,
+        }));
+    })
+
+    // const rotate = (matrix, dir) => {
+
+    // }
+
+    const updatePlayerPos = ({x, y, collided}) => {
+        setPlayer(prev => ({
             pos: {x: (prev.pos.x += x), y: (prev.pos.y += y)},
-            collided,
+            tetromino: prev.tetromino,
+            collided: collided,
         }))
     }
 
@@ -25,8 +53,7 @@ export const usePlayer = () => {
                 collided: false,
             })
         },
-        [],
-    )
+        [])
     
-    return [player, updatePlayerPos, resetPlayer];
+    return [player, rotate, updatePlayerPos, resetPlayer];
 }
