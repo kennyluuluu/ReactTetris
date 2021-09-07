@@ -11,4 +11,4 @@ Cell.propTypes = {};
 
 Cell.defaultProps = {};
 
-export default Cell;
+export default React.memo(Cell);
